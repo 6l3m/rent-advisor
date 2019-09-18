@@ -3,7 +3,6 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import Header from './components/Header/Header';
 import './App.scss';
-import DarkTheme from './components/DarkTheme/DarkTheme';
 
 const App = () => {
   const theme = createMuiTheme({
@@ -12,10 +11,19 @@ const App = () => {
     },
   });
 
+  const styles = {
+    container: {
+      width: '100%',
+      backgroundColor: theme.palette.background.default,
+      height: '100vh',
+    },
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <Header />
-      <DarkTheme />
+      <div style={styles.container}>
+        <Header />
+      </div>
     </ThemeProvider>
   );
 };
