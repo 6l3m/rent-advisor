@@ -1,4 +1,15 @@
-.app-container {
-  width: 100%;
+.app--container {
+  flex-direction: column;
+  background-image: url('assets/images/pedro-lastra-v6Sy3kyBROE-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
   height: 100vh;
+}
+
+.app--image-credits {
+  position: absolute;
+  bottom: 1rem;
+  right: 2rem;
+  opacity: .5;
 }

@@ -1,8 +1,10 @@
 import React from 'react';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { Grid, CssBaseline, Typography } from '@material-ui/core';
 import Header from './components/Header/Header';
 import './App.scss';
+import Search from './components/Search/Search';
 
 const App = () => {
   const theme = createMuiTheme({
@@ -11,19 +13,16 @@ const App = () => {
     },
   });
 
-  const styles = {
-    container: {
-      width: '100%',
-      backgroundColor: theme.palette.background.default,
-      height: '100vh',
-    },
-  };
-
   return (
     <ThemeProvider theme={theme}>
-      <div style={styles.container}>
+      <Grid container component="main" className="app--container">
+        <CssBaseline />
         <Header />
-      </div>
+        <Search />
+        <Typography variant="caption" className="app--image-credits">
+          Photo by Pedro Lastra on Unsplash
+        </Typography>
+      </Grid>
     </ThemeProvider>
   );
 };

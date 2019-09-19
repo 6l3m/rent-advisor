@@ -1,0 +1,15 @@
+.search--card-container {
+  width: 80%;
+  position: absolute;
+  right: 10%;
+  top: 15vh;
+  bottom: 10vh;
+}
+
+@media (min-width: 768px) {
+
+  .search--card-container {
+    width: 35%;
+    right: 15%;
+  }
+}
