@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 import './Search.scss';
 
 const useStyles = makeStyles({
@@ -23,22 +24,16 @@ const useStyles = makeStyles({
 
 export default function Search() {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+  // const { t } = this.props;
 
   return (
     <Card className="search--card-container">
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Word of the Day
-        </Typography>
+      <CardContent className="search--card-content">
+        <div className="search--icon-container">
+          <LocationSearchingIcon />
+        </div>
         <Typography variant="h5" component="h2">
-          be
-          {bull}
-          nev
-          {bull}
-          o
-          {bull}
-          lent
+          {('Search')}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
           adjective
