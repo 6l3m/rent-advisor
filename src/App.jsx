@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
+
 import { createMuiTheme } from '@material-ui/core/styles';
-import { ThemeProvider } from '@material-ui/styles';
 import { Grid, CssBaseline, Typography } from '@material-ui/core';
-// import PropTypes from 'prop-types';
+import { ThemeProvider } from '@material-ui/styles';
+
+import PropTypes from 'prop-types';
 
 import Header from './components/Header/Header';
-import './App.scss';
 import Search from './components/Search/Search';
+
+import './App.scss';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // value: 'fr'
+      lang: 'fr',
     };
   }
 
-  // handleChange = (event) => {
-  //   const newlang = event.target.value;
-  //   const { i18n } = this.props;
-  //   this.setState(() => ({
-  //     // value: newlang
-  //   }));
-  //   i18n.changeLanguage(newlang);
-  // };
+  handleChange = (event) => {
+    const newlang = event.target.value;
+    const { i18n } = this.props;
+    this.setState(() => ({
+      lang: newlang,
+    }));
+    i18n.changeLanguage(newlang);
+  };
 
   render() {
     const theme = createMuiTheme({
@@ -31,12 +34,13 @@ class App extends Component {
         type: 'dark', // Switching the dark mode on is a single property value change.
       },
     });
+    const { lang } = this.state;
 
     return (
       <ThemeProvider theme={theme}>
         <Grid container component="main" className="app--container">
           <CssBaseline />
-          <Header />
+          <Header lang={lang} handleChange={this.handleChange} />
           <Search />
           <Typography variant="caption" className="app--image-credits">
             Photo by Pedro Lastra on Unsplash
@@ -47,8 +51,12 @@ class App extends Component {
   }
 }
 
-// App.propTypes = {
-//   i18n: PropTypes.shape,
-// };
+App.propTypes = {
+  i18n: PropTypes.object,
+};
+
+App.defaultProps = {
+  i18n: {},
+};
 
 export default App;

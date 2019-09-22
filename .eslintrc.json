@@ -5,7 +5,8 @@
     "node": true
   },
   "rules": {
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "react/forbid-prop-types": 0
   },
   "parser": "babel-eslint"
 }
