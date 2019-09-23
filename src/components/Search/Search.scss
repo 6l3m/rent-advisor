@@ -6,8 +6,24 @@
   bottom: 10vh;
 }
 
+.search--card-image {
+  height: 20%;
+  background-image: url('../../assets/images/sebastien-gabriel-gyUVNafCIG8-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.search--card-credits {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  opacity: .4;
+}
+
 .search--card-content {
-  height: 90%;
+  height: 70%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -19,5 +35,9 @@
   .search--card-container {
     width: 35%;
     right: 15%;
+  }
+
+  .search--card-credits {
+    left: 58%;
   }
 }

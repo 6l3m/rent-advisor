@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { withTranslation } from 'react-i18next';
+
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Grid, CssBaseline, Typography } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
@@ -59,4 +61,4 @@ App.defaultProps = {
   i18n: {},
 };
 
-export default App;
+export default withTranslation()(App);
