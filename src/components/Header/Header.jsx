@@ -6,7 +6,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
-import { Typography, Select, MenuItem } from '@material-ui/core';
+import {
+  Typography, Select, MenuItem, SvgIcon,
+} from '@material-ui/core';
 
 import './Header.scss';
 
@@ -43,6 +45,10 @@ export default function Header(props) {
         <Typography variant="h6" className="header--title">
           Rent_Advisor
         </Typography>
+        <SvgIcon>
+          {/* <use href="assets/images/Ville_de_Paris_logo_2019.svg" /> */}
+          <img src="./assets/images/Ville_de_Paris_logo_2019.svg" alt="" width="50" height="50" />
+        </SvgIcon>
         <div className="header--block-right">
           <Select
             value={lang}
