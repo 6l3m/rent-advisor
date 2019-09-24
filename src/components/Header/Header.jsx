@@ -7,10 +7,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
 import {
-  Typography, Select, MenuItem, SvgIcon,
+  Typography, Select, MenuItem,
 } from '@material-ui/core';
 
 import './Header.scss';
+
+import { ReactComponent as ParisLogo } from '../../assets/images/Ville_de_Paris_logo_2019.svg';
 
 const useStyles = makeStyles({
   colorPrimary: {
@@ -41,14 +43,11 @@ export default function Header(props) {
 
   return (
     <AppBar position="static" classes={{ colorPrimary: classes.colorPrimary }}>
-      <Toolbar>
+      <Toolbar className="header--toolbar-container">
         <Typography variant="h6" className="header--title">
           Rent_Advisor
         </Typography>
-        <SvgIcon>
-          {/* <use href="assets/images/Ville_de_Paris_logo_2019.svg" /> */}
-          <img src="./assets/images/Ville_de_Paris_logo_2019.svg" alt="" width="50" height="50" />
-        </SvgIcon>
+        <ParisLogo className="header--city-logo" />
         <div className="header--block-right">
           <Select
             value={lang}
