@@ -1,26 +1,24 @@
 import i18n from 'i18next';
+
 import { initReactI18next } from 'react-i18next';
+
 import LanguageDetector from 'i18next-browser-languagedetector';
 
-const resources = {
-  fr: {
-    translations: {
-      Search: 'Rechercher annonces',
-    },
-  },
-  en: {
-    translations: {
-      Search: 'Search for ads',
-    },
-  },
-};
+import fr from './assets/locales/fr/translations.json';
+import en from './assets/locales/en/translations.json';
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    // we init with resources
-    resources,
+    resources: {
+      fr: {
+        translations: fr,
+      },
+      en: {
+        translations: en,
+      },
+    },
     fallbackLng: 'fr',
     debug: false,
 

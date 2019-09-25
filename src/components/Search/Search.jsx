@@ -13,6 +13,7 @@ import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
 import { withStyles } from '@material-ui/styles';
 
 import './Search.scss';
+import SearchForm from './SearchForm/SearchForm';
 
 const styles = {
   bullet: {
@@ -64,19 +65,12 @@ class Search extends React.Component {
             <LocationSearchingIcon classes={{ root: classes.locationIcon }} />
           </div>
           <Typography variant="h5" component="h2">
-            {t('Search')}
+            {t('SearchAds')}
           </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            adjective
-          </Typography>
-          <Typography variant="body2" component="p">
-            well meaning and kindly.
-            <br />
-            {'"a benevolent smile"'}
-          </Typography>
+          <SearchForm t={t} />
         </CardContent>
-        <CardActions>
-          <Button size="small">Learn More</Button>
+        <CardActions classes={{ root: 'search--card-actions' }}>
+          <Button variant="outlined" size="large">{t('Search')}</Button>
         </CardActions>
       </Card>
     );
