@@ -47,11 +47,21 @@ const defaultProps = {
 class Search extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      zipCode: '',
+      budget: '',
+    };
+  }
+
+  getUrl = () => {
+    const { zipCode, budget } = this.state;
+    return `https://www.seloger.com/list.htm?ci=${zipCode}&enterprise=0&`
+      + `idtt=1&idtypebien=2,1&naturebien=1&pxmax=${budget}&tri=initial&bd=DetailToList_SL`;
   }
 
   render() {
     const { t, classes } = this.props;
+    const { zipCode, budget } = this.state;
 
     return (
       <Card className="search--card-container">
@@ -67,7 +77,7 @@ class Search extends React.Component {
           <Typography variant="h5" component="h2">
             {t('SearchAds')}
           </Typography>
-          <SearchForm t={t} />
+          <SearchForm t={t} zipCode={zipCode} budget={budget} />
         </CardContent>
         <CardActions classes={{ root: 'search--card-actions' }}>
           <Button variant="outlined" size="large">{t('Search')}</Button>
