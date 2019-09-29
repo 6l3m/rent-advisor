@@ -18,6 +18,7 @@ class App extends Component {
     super(props);
     this.state = {
       lang: props.i18n.language,
+      adSearch: { },
     };
   }
 
@@ -29,6 +30,10 @@ class App extends Component {
     }));
     i18n.changeLanguage(newlang);
   };
+
+  handleSubmit = (adSearch) => {
+    this.setState((prevState) => ({ ...prevState, adSearch }));
+  }
 
   render() {
     const theme = createMuiTheme({
@@ -43,7 +48,7 @@ class App extends Component {
         <Grid container component="main" className="app--container">
           <CssBaseline />
           <Header lang={lang} handleChange={this.handleChange} />
-          <Search />
+          <Search handleSubmit={this.handleSubmit} />
           <Typography variant="caption" className="app--image-credits">
             Photo by Pedro Lastra on Unsplash
           </Typography>

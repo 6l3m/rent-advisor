@@ -27,17 +27,21 @@ const propTypes = {
   zipCode: PropTypes.string,
   budget: PropTypes.string,
   t: PropTypes.func,
+  handleChange: PropTypes.func,
 };
 
 const defaultProps = {
   zipCode: '',
   budget: '',
-  t: Function,
+  t: () => {},
+  handleChange: () => {},
 };
 
 export default function SearchForm(props) {
   const classes = useStyles();
-  const { t, zipCode, budget } = props;
+  const {
+    t, zipCode, budget, handleChange,
+  } = props;
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
@@ -46,7 +50,7 @@ export default function SearchForm(props) {
         label={t('ZipCode')}
         className={classes.textField}
         value={zipCode}
-        // onChange={handleChange('zipCode')}
+        onChange={handleChange('zipCode')}
         margin="normal"
         variant="outlined"
       />
@@ -55,7 +59,7 @@ export default function SearchForm(props) {
         label={t('Budget')}
         className={classes.textField}
         value={budget}
-        // onChange={handleChange('budget')}
+        onChange={handleChange('budget')}
         margin="normal"
         variant="outlined"
       />

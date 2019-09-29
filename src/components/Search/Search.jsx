@@ -37,11 +37,13 @@ const styles = {
 const propTypes = {
   t: PropTypes.func,
   classes: PropTypes.object,
+  handleSubmit: PropTypes.func,
 };
 
 const defaultProps = {
   t: Function,
   classes: {},
+  handleSubmit: () => {},
 };
 
 class Search extends React.Component {
@@ -53,10 +55,29 @@ class Search extends React.Component {
     };
   }
 
-  getUrl = () => {
+  getUrl = () => 'http://localhost/api/slapi/ads';
+
+  handleChange = (name) => (event) => {
+    const { value } = event.target;
+    this.setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  submitForm = async () => {
     const { zipCode, budget } = this.state;
-    return `https://www.seloger.com/list.htm?ci=${zipCode}&enterprise=0&`
-      + `idtt=1&idtypebien=2,1&naturebien=1&pxmax=${budget}&tri=initial&bd=DetailToList_SL`;
+    const { handleSubmit } = this.props;
+    const data = { zipCode, budget };
+    const resp = await fetch(this.getUrl(), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    const respJson = await resp.json();
+    handleSubmit(JSON.parse(respJson.resp));
   }
 
   render() {
@@ -77,10 +98,15 @@ class Search extends React.Component {
           <Typography variant="h5" component="h2">
             {t('SearchAds')}
           </Typography>
-          <SearchForm t={t} zipCode={zipCode} budget={budget} />
+          <SearchForm
+            t={t}
+            zipCode={zipCode}
+            budget={budget}
+            handleChange={this.handleChange}
+          />
         </CardContent>
         <CardActions classes={{ root: 'search--card-actions' }}>
-          <Button variant="outlined" size="large">{t('Search')}</Button>
+          <Button variant="outlined" size="large" onClick={this.submitForm}>{t('Search')}</Button>
         </CardActions>
       </Card>
     );
