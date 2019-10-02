@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
-import { TextField } from '@material-ui/core';
+import { TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
   },
   menu: {
     width: 200,
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
   },
 }));
 
@@ -43,6 +47,12 @@ export default function SearchForm(props) {
     t, zipCode, budget, handleChange,
   } = props;
 
+  const inputLabel = React.useRef(null);
+  const [labelWidth, setLabelWidth] = React.useState(0);
+  React.useEffect(() => {
+    setLabelWidth(inputLabel.current.offsetWidth);
+  }, []);
+
   return (
     <form className={classes.container} noValidate autoComplete="off">
       <TextField
@@ -54,6 +64,27 @@ export default function SearchForm(props) {
         margin="normal"
         variant="outlined"
       />
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
+          Age
+        </InputLabel>
+        <Select
+          value={zipCode}
+          onChange={handleChange('zipCode')}
+          labelWidth={labelWidth}
+          inputProps={{
+            name: 'age',
+            id: 'outlined-age-simple',
+          }}
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={10}>Ten</MenuItem>
+          <MenuItem value={20}>Twenty</MenuItem>
+          <MenuItem value={30}>Thirty</MenuItem>
+        </Select>
+      </FormControl>
       <TextField
         id="outlined-budget"
         label={t('Budget')}
