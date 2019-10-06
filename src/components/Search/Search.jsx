@@ -15,6 +15,8 @@ import { withStyles } from '@material-ui/styles';
 import './Search.scss';
 import SearchForm from './SearchForm/SearchForm';
 
+import codes from '../../assets/code-postal-code-insee-2015';
+
 const styles = {
   bullet: {
     display: 'inline-block',
@@ -68,7 +70,8 @@ class Search extends React.Component {
   submitForm = async () => {
     const { zipCode, budget } = this.state;
     const { handleSubmit } = this.props;
-    const data = { zipCode, budget };
+    const inseeCode = codes.find((code) => code.fields.code_postal === zipCode).fields.insee_com;
+    const data = { inseeCode, budget };
     const resp = await fetch(this.getUrl(), {
       method: 'POST',
       headers: {
@@ -102,6 +105,7 @@ class Search extends React.Component {
             t={t}
             zipCode={zipCode}
             budget={budget}
+            codes={codes}
             handleChange={this.handleChange}
           />
         </CardContent>

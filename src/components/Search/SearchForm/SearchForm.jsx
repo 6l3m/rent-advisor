@@ -3,13 +3,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
-import { TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import {
+  TextField, FormControl, InputLabel, Select, MenuItem,
+} from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   container: {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
+    alignItems: 'baseline',
   },
   textField: {
     marginLeft: theme.spacing(1),
@@ -23,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    minWidth: 150,
   },
 }));
 
@@ -32,6 +35,7 @@ const propTypes = {
   budget: PropTypes.string,
   t: PropTypes.func,
   handleChange: PropTypes.func,
+  codes: PropTypes.array,
 };
 
 const defaultProps = {
@@ -39,12 +43,13 @@ const defaultProps = {
   budget: '',
   t: () => {},
   handleChange: () => {},
+  codes: [],
 };
 
 export default function SearchForm(props) {
   const classes = useStyles();
   const {
-    t, zipCode, budget, handleChange,
+    t, zipCode, budget, handleChange, codes,
   } = props;
 
   const inputLabel = React.useRef(null);
@@ -55,34 +60,24 @@ export default function SearchForm(props) {
 
   return (
     <form className={classes.container} noValidate autoComplete="off">
-      <TextField
-        id="outlined-zipcode"
-        label={t('ZipCode')}
-        className={classes.textField}
-        value={zipCode}
-        onChange={handleChange('zipCode')}
-        margin="normal"
-        variant="outlined"
-      />
       <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel ref={inputLabel} htmlFor="outlined-age-simple">
-          Age
+        <InputLabel ref={inputLabel} htmlFor="outlined-zipCode-simple">
+          {t('ZipCode')}
         </InputLabel>
         <Select
           value={zipCode}
           onChange={handleChange('zipCode')}
           labelWidth={labelWidth}
           inputProps={{
-            name: 'age',
-            id: 'outlined-age-simple',
+            name: 'zipCode',
+            id: 'outlined-zipCode-simple',
           }}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {codes.map((code) => (
+            <MenuItem key={code.recordid} value={code.fields.code_postal}>
+              {code.fields.code_postal}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
       <TextField

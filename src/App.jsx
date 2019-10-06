@@ -12,6 +12,7 @@ import Header from './components/Header/Header';
 import Search from './components/Search/Search';
 
 import './App.scss';
+import Ads from './components/Ads/Ads';
 
 class App extends Component {
   constructor(props) {
@@ -41,17 +42,22 @@ class App extends Component {
         type: 'dark', // Switching the dark mode on is a single property value change.
       },
     });
-    const { lang } = this.state;
+    const { lang, adSearch } = this.state;
 
     return (
       <ThemeProvider theme={theme}>
         <Grid container component="main" className="app--container">
           <CssBaseline />
-          <Header lang={lang} handleChange={this.handleChange} />
-          <Search handleSubmit={this.handleSubmit} />
-          <Typography variant="caption" className="app--image-credits">
-            Photo by Pedro Lastra on Unsplash
-          </Typography>
+          <div className="app--home-container">
+            <Header lang={lang} handleChange={this.handleChange} />
+            <Search handleSubmit={this.handleSubmit} />
+            <Typography variant="caption" className="app--image-credits">
+              Photo by Pedro Lastra on Unsplash
+            </Typography>
+          </div>
+          {!!adSearch.products && !!adSearch.products.length && (
+            <Ads ads={adSearch.products} />
+          )}
         </Grid>
       </ThemeProvider>
     );
