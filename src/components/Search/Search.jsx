@@ -15,8 +15,6 @@ import { withStyles } from '@material-ui/styles';
 import './Search.scss';
 import SearchForm from './SearchForm/SearchForm';
 
-import codes from '../../assets/code-postal-code-insee-2015';
-
 const styles = {
   bullet: {
     display: 'inline-block',
@@ -38,14 +36,14 @@ const styles = {
 
 const propTypes = {
   t: PropTypes.func,
-  classes: PropTypes.object,
   handleSubmit: PropTypes.func,
+  codes: PropTypes.array,
 };
 
 const defaultProps = {
   t: Function,
-  classes: {},
   handleSubmit: () => {},
+  codes: [],
 };
 
 class Search extends React.Component {
@@ -57,8 +55,7 @@ class Search extends React.Component {
     };
   }
 
-  getUrl = () => 'http://localhost/api/slapi/ads';
-
+  // handles zipCode and budget
   handleChange = (name) => (event) => {
     const { value } = event.target;
     this.setState((prevState) => ({
@@ -68,23 +65,13 @@ class Search extends React.Component {
   };
 
   submitForm = async () => {
-    const { zipCode, budget } = this.state;
     const { handleSubmit } = this.props;
-    const inseeCode = codes.find((code) => code.fields.code_postal === zipCode).fields.insee_com;
-    const data = { inseeCode, budget };
-    const resp = await fetch(this.getUrl(), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const respJson = await resp.json();
-    handleSubmit(JSON.parse(respJson.resp));
+    const { zipCode, budget } = this.state;
+    handleSubmit(zipCode, budget);
   }
 
   render() {
-    const { t, classes } = this.props;
+    const { t, codes } = this.props;
     const { zipCode, budget } = this.state;
 
     return (
@@ -96,7 +83,7 @@ class Search extends React.Component {
         </div>
         <CardContent className="search--card-content">
           <div className="search--icon-container">
-            <LocationSearchingIcon classes={{ root: classes.locationIcon }} />
+            <LocationSearchingIcon />
           </div>
           <Typography variant="h5" component="h2">
             {t('SearchAds')}
