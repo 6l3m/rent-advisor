@@ -4,11 +4,14 @@ import { withTranslation } from 'react-i18next';
 
 import { createMuiTheme } from '@material-ui/core/styles';
 import {
-  Grid, CssBaseline, Typography, CircularProgress,
+  Grid, CssBaseline, Typography, CircularProgress, Fab,
 } from '@material-ui/core';
 import { ThemeProvider } from '@material-ui/styles';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 import PropTypes from 'prop-types';
+
+import jump from 'jump.js';
 
 import Header from './components/Header/Header';
 import Search from './components/Search/Search';
@@ -28,6 +31,8 @@ class App extends Component {
       adSearch: { },
       adsLoading: false,
     };
+    this.progress = React.createRef();
+    this.home = React.createRef();
   }
 
   handleChange = (event) => {
@@ -42,7 +47,9 @@ class App extends Component {
   handleSubmit = async (zipCode, budget) => {
     const inseeCode = codes.find((code) => code.fields.code_postal === zipCode).fields.insee_com;
     const data = { inseeCode, budget };
-    this.setState((prevState) => ({ ...prevState, adsLoading: true }));
+    this.setState((prevState) => (
+      { ...prevState, adsLoading: true }
+    ), () => jump(this.progress.current));
     const resp = await fetch(config.adsUrl, {
       method: 'POST',
       headers: {
@@ -56,6 +63,8 @@ class App extends Component {
     }));
   }
 
+  goTop = () => jump(this.home.current)
+
   render() {
     const theme = createMuiTheme({
       palette: {
@@ -68,22 +77,33 @@ class App extends Component {
       <ThemeProvider theme={theme}>
         <Grid container component="main" className="app--container">
           <CssBaseline />
-          <div className="app--home-container">
+          <div ref={this.home} className="app--home-container">
             <Header lang={lang} handleChange={this.handleChange} />
-            <Search handleSubmit={this.handleSubmit} codes={codes} />
+            <Search
+              handleSubmit={this.handleSubmit}
+              codes={codes}
+              bgCredits={config.searchBgCredits}
+            />
             <Typography variant="caption" className="app--image-credits">
-              Photo by Pedro Lastra on Unsplash
+              {config.homeBgCredits}
             </Typography>
           </div>
-          {/* {!!adSearch.products && !!adSearch.products.length ? (
-            <Ads ads={adSearch.products} />
+          {!!adSearch.products && !!adSearch.products.length ? (
+            <>
+              <Ads ads={adSearch.products} />
+              <Fab color="primary" className="app--fab" onClick={this.goTop}>
+                <ArrowUpwardIcon />
+              </Fab>
+            </>
           ) : adsLoading && (
-            <CircularProgress />
-          )} */}
-          {adsLoading && (
-            <div className="app--progress-container">
-              <CircularProgress className="app--progress" />
-            </div>
+            <>
+              <div ref={this.progress} className="app--progress-container">
+                <CircularProgress className="app--progress" />
+              </div>
+              <Fab color="primary" className="app--fab" onClick={this.goTop}>
+                <ArrowUpwardIcon />
+              </Fab>
+            </>
           )}
         </Grid>
       </ThemeProvider>

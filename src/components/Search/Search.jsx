@@ -10,40 +10,22 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
-import { withStyles } from '@material-ui/styles';
 
 import './Search.scss';
 import SearchForm from './SearchForm/SearchForm';
-
-const styles = {
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  locationIcon: {
-    width: '3em',
-    height: '3em',
-    color: 'red',
-  },
-};
 
 const propTypes = {
   t: PropTypes.func,
   handleSubmit: PropTypes.func,
   codes: PropTypes.array,
+  bgCredits: PropTypes.string,
 };
 
 const defaultProps = {
   t: Function,
   handleSubmit: () => {},
   codes: [],
+  bgCredits: '',
 };
 
 class Search extends React.Component {
@@ -64,25 +46,25 @@ class Search extends React.Component {
     }));
   };
 
-  submitForm = async () => {
+  submitForm = () => {
     const { handleSubmit } = this.props;
     const { zipCode, budget } = this.state;
     handleSubmit(zipCode, budget);
   }
 
   render() {
-    const { t, codes } = this.props;
+    const { t, codes, bgCredits } = this.props;
     const { zipCode, budget } = this.state;
 
     return (
       <Card className="search--card-container">
         <div className="search--card-image">
           <Typography variant="caption" className="search--card-credits">
-            Photo by Sebastien Gabriel on Unsplash
+            {bgCredits}
           </Typography>
         </div>
         <CardContent className="search--card-content">
-          <div className="search--icon-container">
+          <div>
             <LocationSearchingIcon />
           </div>
           <Typography variant="h5" component="h2">
@@ -107,4 +89,4 @@ class Search extends React.Component {
 Search.propTypes = propTypes;
 Search.defaultProps = defaultProps;
 
-export default withStyles(styles)(withTranslation()(Search));
+export default withTranslation()(Search);
