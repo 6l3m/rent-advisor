@@ -10,15 +10,26 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import LocationSearchingIcon from '@material-ui/icons/LocationSearching';
+import { withStyles } from '@material-ui/styles';
 
 import './Search.scss';
+
 import SearchForm from './SearchForm/SearchForm';
+
+const styles = {
+  icon: {
+    fill: 'red',
+    width: '3em',
+    height: '3em',
+  },
+};
 
 const propTypes = {
   t: PropTypes.func,
   handleSubmit: PropTypes.func,
   codes: PropTypes.array,
   bgCredits: PropTypes.string,
+  classes: PropTypes.object,
 };
 
 const defaultProps = {
@@ -26,6 +37,7 @@ const defaultProps = {
   handleSubmit: () => {},
   codes: [],
   bgCredits: '',
+  classes: {},
 };
 
 class Search extends React.Component {
@@ -53,7 +65,9 @@ class Search extends React.Component {
   }
 
   render() {
-    const { t, codes, bgCredits } = this.props;
+    const {
+      t, codes, bgCredits, classes,
+    } = this.props;
     const { zipCode, budget } = this.state;
 
     return (
@@ -65,7 +79,7 @@ class Search extends React.Component {
         </div>
         <CardContent className="search--card-content">
           <div>
-            <LocationSearchingIcon />
+            <LocationSearchingIcon className={classes.icon} />
           </div>
           <Typography variant="h5" component="h2">
             {t('SearchAds')}
@@ -89,4 +103,4 @@ class Search extends React.Component {
 Search.propTypes = propTypes;
 Search.defaultProps = defaultProps;
 
-export default withTranslation()(Search);
+export default withTranslation()(withStyles(styles)(Search));
