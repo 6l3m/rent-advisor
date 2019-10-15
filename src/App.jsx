@@ -6,7 +6,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import {
   Grid, CssBaseline, Typography, CircularProgress, Fab,
 } from '@material-ui/core';
-import { ThemeProvider } from '@material-ui/styles';
+import { ThemeProvider, withStyles } from '@material-ui/styles';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
 import PropTypes from 'prop-types';
@@ -22,6 +22,14 @@ import Ads from './components/Ads/Ads';
 import codes from './assets/code-postal-code-insee-2015';
 
 import config from './config';
+
+const styles = {
+  upArrow: {
+    position: 'fixed',
+    bottom: '2rem',
+    left: '88%',
+  },
+};
 
 class App extends Component {
   constructor(props) {
@@ -72,6 +80,7 @@ class App extends Component {
       },
     });
     const { lang, adSearch, adsLoading } = this.state;
+    const { classes } = this.props;
 
     return (
       <ThemeProvider theme={theme}>
@@ -88,10 +97,10 @@ class App extends Component {
               {config.homeBgCredits}
             </Typography>
           </div>
-          {!!adSearch.products && !!adSearch.products.length ? (
+          {!!adSearch.cards && !!adSearch.cards.list && !!adSearch.cards.list.length ? (
             <>
-              <Ads ads={adSearch.products} />
-              <Fab color="primary" className="app--fab" onClick={this.goTop}>
+              <Ads ads={adSearch.cards.list} />
+              <Fab color="primary" className={classes.upArrow} onClick={this.goTop}>
                 <ArrowUpwardIcon />
               </Fab>
             </>
@@ -100,7 +109,7 @@ class App extends Component {
               <div ref={this.progress} className="app--progress-container">
                 <CircularProgress className="app--progress" />
               </div>
-              <Fab color="primary" className="app--fab" onClick={this.goTop}>
+              <Fab color="primary" className={classes.upArrow} onClick={this.goTop}>
                 <ArrowUpwardIcon />
               </Fab>
             </>
@@ -113,10 +122,12 @@ class App extends Component {
 
 App.propTypes = {
   i18n: PropTypes.object,
+  classes: PropTypes.object,
 };
 
 App.defaultProps = {
   i18n: {},
+  classes: {},
 };
 
-export default withTranslation()(App);
+export default withTranslation()(withStyles(styles)(App));

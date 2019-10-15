@@ -34,8 +34,8 @@ export default function Ads(props) {
   return (
     <>
       {ads.map((ad) => (
-        !!ad.idannonce && (
-          <Card key={parseInt(ad.idannonce, 10)} className={classes.card}>
+        !!ad.id && (
+          <Card key={ad.id} className={classes.card}>
             <CardContent>
               <Typography className={classes.title} color="textSecondary" gutterBottom>
                 {`${ad.typedebien}, Prix: ${ad.prix}`}
