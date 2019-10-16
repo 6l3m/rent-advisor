@@ -15,9 +15,9 @@ import jump from 'jump.js';
 
 import Header from './components/Header/Header';
 import Search from './components/Search/Search';
+import Ads from './components/Ads/Ads';
 
 import './App.scss';
-import Ads from './components/Ads/Ads';
 
 import codes from './assets/code-postal-code-insee-2015';
 
@@ -27,7 +27,7 @@ const styles = {
   upArrow: {
     position: 'fixed',
     bottom: '2rem',
-    left: '88%',
+    right: '2rem',
   },
 };
 
