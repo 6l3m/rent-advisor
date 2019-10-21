@@ -39,7 +39,11 @@ class App extends Component {
       adSearch: { },
       adsLoading: false,
     };
-    this.progress = React.createRef();
+    this.setProgress = (element) => {
+      if (element) {
+        jump(element);
+      }
+    };
     this.home = React.createRef();
   }
 
@@ -56,8 +60,8 @@ class App extends Component {
     const inseeCode = codes.find((code) => code.fields.code_postal === zipCode).fields.insee_com;
     const data = { inseeCode, budget };
     this.setState((prevState) => (
-      { ...prevState, adsLoading: true }
-    ), () => jump(this.progress.current));
+      { ...prevState, adSearch: { }, adsLoading: true }
+    ));
     const resp = await fetch(config.adsUrl, {
       method: 'POST',
       headers: {
@@ -65,9 +69,9 @@ class App extends Component {
       },
       body: JSON.stringify(data),
     });
-    const respJson = await resp.json();
+    const respAsJson = await resp.json();
     this.setState((prevState) => ({
-      ...prevState, adSearch: JSON.parse(respJson.resp), adsLoading: true,
+      ...prevState, adSearch: respAsJson.data, adsLoading: false,
     }));
   }
 
@@ -106,7 +110,7 @@ class App extends Component {
             </>
           ) : adsLoading && (
             <>
-              <div ref={this.progress} className="app--progress-container">
+              <div ref={this.setProgress} className="app--progress-container">
                 <CircularProgress className="app--progress" />
               </div>
               <Fab color="primary" className={classes.upArrow} onClick={this.goTop}>

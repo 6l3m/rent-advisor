@@ -71,7 +71,7 @@ class ErrorBoundary extends React.Component {
             ContentProps={{
               'aria-describedby': 'message-id',
             }}
-            message={<span id="message-id">{errorInfo}</span>}
+            message={<span id="message-id">{errorInfo.componentStack || errorInfo}</span>}
             action={[
               <Button key="undo" color="secondary" size="small" onClick={this.handleClose}>
                 UNDO

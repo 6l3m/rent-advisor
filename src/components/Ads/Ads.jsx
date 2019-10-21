@@ -34,11 +34,11 @@ export default function Ads(props) {
   return (
     <>
       {ads.map((ad) => (
-        !!ad.id && (
+        !!ad.id && typeof ad.id === 'number' && (
           <Card key={ad.id} className={classes.card}>
             <CardContent>
               <Typography className={classes.title} color="textSecondary" gutterBottom>
-                {`${ad.typedebien}, Prix: ${ad.prix}`}
+                {`${ad.typedebien}, Prix: ${ad.pricing.price}`}
               </Typography>
               <Typography variant="h5" component="h2">
                 be
