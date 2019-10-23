@@ -17,6 +17,8 @@ import Header from './components/Header/Header';
 import Search from './components/Search/Search';
 import Ads from './components/Ads/Ads';
 
+import { ReactComponent as ParisLogo } from './assets/images/Ville_de_Paris_logo_2019.svg';
+
 import './App.scss';
 
 import codes from './assets/code-postal-code-insee-2015';
@@ -92,11 +94,14 @@ class App extends Component {
           <CssBaseline />
           <div ref={this.home} className="app--home-container">
             <Header lang={lang} handleChange={this.handleChange} />
-            <Search
-              handleSubmit={this.handleSubmit}
-              codes={codes}
-              bgCredits={config.searchBgCredits}
-            />
+            <div className="app--home-content">
+              <ParisLogo className="app--city-logo" />
+              <Search
+                handleSubmit={this.handleSubmit}
+                codes={codes}
+                bgCredits={config.searchBgCredits}
+              />
+            </div>
             <Typography variant="caption" className="app--image-credits">
               {config.homeBgCredits}
             </Typography>

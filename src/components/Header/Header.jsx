@@ -12,8 +12,6 @@ import {
 
 import './Header.scss';
 
-import { ReactComponent as ParisLogo } from '../../assets/images/Ville_de_Paris_logo_2019.svg';
-
 const useStyles = makeStyles({
   colorPrimary: {
     color: 'white',
@@ -47,7 +45,6 @@ export default function Header(props) {
         <Typography variant="h6" className="header--title">
           Rent_Advisor
         </Typography>
-        <ParisLogo className="header--city-logo" />
         <div className="header--block-right">
           <Select
             value={lang}

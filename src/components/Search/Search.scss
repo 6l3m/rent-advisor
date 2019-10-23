@@ -1,9 +1,6 @@
 .search--card-container {
   width: 80%;
-  position: absolute;
-  right: 10%;
-  top: 20vh;
-  bottom: 10vh;
+  height: 80%;
 }
 
 .search--card-image {
@@ -40,8 +37,9 @@
 
   .search--card-container {
     width: 35%;
+    height: 80%;
+    position: absolute;
     right: 15%;
-    top: 15vh;
   }
 
   .search--card-image {
@@ -54,5 +52,12 @@
 
   .search--card-content {
     height: 55%;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .search--card-container {
+    height: 70%;
   }
 }

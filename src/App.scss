@@ -11,6 +11,19 @@
   height: 100vh;
 }
 
+.app--home-content {
+  height: calc(100vh - 4.5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.app--city-logo {
+  height: auto;
+  fill: white;
+  opacity: .5;
+}
+
 .app--image-credits {
   position: absolute;
   bottom: 1rem;
@@ -33,4 +46,26 @@
   position: relative;
   bottom: 5rem;
   left: 88%;
+}
+
+@media (min-width: 768px) {
+
+  .app--city-logo {
+    width: 11%;
+    position: absolute;
+    top: 12vh;
+    left: 32%;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .app--home-content {
+    flex-direction: column;
+  }
+
+  .app--city-logo {
+    width: 25%;
+    margin: 1rem 0;
+  }
 }
