@@ -7,9 +7,12 @@ import {
   Card, CardContent, Typography, CardActions, Button,
 } from '@material-ui/core';
 
+import './Ads.scss';
+
 const useStyles = makeStyles({
   card: {
     minWidth: 275,
+    margin: '1rem',
   },
   title: {
     fontSize: 14,
@@ -33,33 +36,35 @@ export default function Ads(props) {
 
   return (
     <>
-      {ads.map((ad) => (
-        !!ad.id && typeof ad.id === 'number' && (
-          <Card key={ad.id} className={classes.card}>
-            <CardContent>
-              <Typography className={classes.title} color="textSecondary" gutterBottom>
-                {`${ad.typedebien}, Prix: ${ad.pricing.price}`}
-              </Typography>
-              <Typography variant="h5" component="h2">
-                be
-                nev
-                lent
-              </Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                adjective
-              </Typography>
-              <Typography variant="body2" component="p">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small">Learn More</Button>
-            </CardActions>
-          </Card>
-        )
-      ))}
+      <div className="ads--container">
+        {ads.map((ad) => (
+          !!ad.id && typeof ad.id === 'number' && (
+            <Card key={ad.id} className={classes.card}>
+              <CardContent>
+                <Typography className={classes.title} color="textSecondary" gutterBottom>
+                  {`${ad.typedebien}, Prix: ${ad.pricing.price}`}
+                </Typography>
+                <Typography variant="h5" component="h2">
+                  be
+                  nev
+                  lent
+                </Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  adjective
+                </Typography>
+                <Typography variant="body2" component="p">
+                  well meaning and kindly.
+                  <br />
+                  a benevolent smile
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button size="small">Learn More</Button>
+              </CardActions>
+            </Card>
+          )
+        ))}
+      </div>
     </>
   );
 }
