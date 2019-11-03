@@ -1,6 +1,7 @@
 .search--card-container {
   width: 80%;
   height: 60vh;
+  z-index: 1;
 }
 
 .search--card-image {
@@ -56,6 +57,13 @@
 @media (max-width: 768px) {
 
   .search--card-container {
-    height: 70%;
+    height: 60vh;
+  }
+}
+
+@media (max-width: 576px) {
+
+  .search--card-icon {
+    display: none;
   }
 }

@@ -78,7 +78,7 @@ class Search extends React.Component {
           </Typography>
         </div>
         <CardContent className="search--card-content">
-          <div>
+          <div className="search--card-icon">
             <LocationSearchingIcon className={classes.icon} />
           </div>
           <Typography variant="h5" component="h2">
