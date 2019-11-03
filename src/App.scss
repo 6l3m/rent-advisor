@@ -15,12 +15,14 @@
 .app--home-content {
   height: calc(100vh - 4.5rem);
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
 .app--city-logo {
-  height: auto;
+  height: 20vh;
+  width: auto;
+  align-self: flex-start;
+  margin-top: 1rem;
   fill: white;
   opacity: .5;
 }
@@ -49,24 +51,41 @@
   left: 88%;
 }
 
-@media (min-width: 768px) {
-
-  .app--city-logo {
-    width: 11%;
-    position: absolute;
-    top: 12vh;
-    left: 32%;
-  }
-}
-
 @media (max-width: 768px) {
 
   .app--home-content {
     flex-direction: column;
+    justify-content: center;
   }
 
   .app--city-logo {
     height: 20vh;
     margin: 1rem 0;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+
+  .app--home-content {
+    margin-left: 10%;
+  }
+}
+
+@media (min-width: 768px) {
+
+  .app--home-content {
+    justify-content: space-evenly;
+  }
+
+  .app--city-logo {
+    top: 12vh;
+    left: 32%;
+  }
+}
+
+@media (min-width: 992px) {
+
+  .app--home-content {
+    margin-left: 20%;
   }
 }
