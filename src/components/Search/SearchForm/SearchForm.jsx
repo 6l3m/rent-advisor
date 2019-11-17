@@ -59,7 +59,7 @@ export default function SearchForm(props) {
   }, []);
 
   return (
-    <form className={classes.container} noValidate autoComplete="off">
+    <form className={classes.container}>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel ref={inputLabel} htmlFor="outlined-zipCode-simple">
           {t('ZipCode')}

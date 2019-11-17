@@ -13,6 +13,8 @@ import PropTypes from 'prop-types';
 
 import jump from 'jump.js';
 
+import debounce from 'lodash.debounce';
+
 import Header from './components/Header/Header';
 import Search from './components/Search/Search';
 import Ads from './components/Ads/Ads';
@@ -47,6 +49,14 @@ class App extends Component {
       }
     };
     this.home = React.createRef();
+    window.onscroll = debounce(() => {
+      if (
+        window.innerHeight + document.documentElement.scrollTop
+        === document.documentElement.offsetHeight
+      ) {
+        // Do awesome stuff like loading more content!
+      }
+    }, 100);
   }
 
   handleChange = (event) => {
@@ -64,7 +74,7 @@ class App extends Component {
     this.setState((prevState) => (
       { ...prevState, adSearch: { }, adsLoading: true }
     ));
-    const resp = await fetch(config.adsUrl, {
+    const resp = await fetch(`${config.apiUrl}${config.adsUrl}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -108,7 +118,7 @@ class App extends Component {
           </div>
           {!!adSearch.cards && !!adSearch.cards.list && !!adSearch.cards.list.length ? (
             <>
-              <Ads ads={adSearch.cards.list} />
+              <Ads ads={[adSearch.cards.list[0]]} />
               <Fab color="primary" className={classes.upArrow} onClick={this.goTop}>
                 <ArrowUpwardIcon />
               </Fab>
