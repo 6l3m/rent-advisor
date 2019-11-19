@@ -62,7 +62,7 @@ export default function Ads(props) {
           ad =>
             !!ad.id &&
             typeof ad.id === 'number' && (
-              <Card key={ad.id} className={classes.card}>
+              <Card key={ad.id} className="ads--card-container">
                 <CardContent>
                   <Typography
                     className={classes.title}

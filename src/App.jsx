@@ -4,7 +4,11 @@ import { withTranslation } from 'react-i18next';
 
 import { createMuiTheme } from '@material-ui/core/styles';
 import {
-  Grid, CssBaseline, Typography, CircularProgress, Fab,
+  Grid,
+  CssBaseline,
+  Typography,
+  CircularProgress,
+  Fab
 } from '@material-ui/core';
 import { ThemeProvider, withStyles } from '@material-ui/styles';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -31,8 +35,8 @@ const styles = {
   upArrow: {
     position: 'fixed',
     bottom: '2rem',
-    right: '2rem',
-  },
+    right: '2rem'
+  }
 };
 
 class App extends Component {
@@ -40,10 +44,10 @@ class App extends Component {
     super(props);
     this.state = {
       lang: props.i18n.language,
-      adSearch: { },
-      adsLoading: false,
+      adSearch: {},
+      adsLoading: false
     };
-    this.setProgress = (element) => {
+    this.setProgress = element => {
       if (element) {
         jump(element);
       }
@@ -51,49 +55,54 @@ class App extends Component {
     this.home = React.createRef();
     window.onscroll = debounce(() => {
       if (
-        window.innerHeight + document.documentElement.scrollTop
-        === document.documentElement.offsetHeight
+        window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight
       ) {
         // Do awesome stuff like loading more content!
       }
     }, 100);
   }
 
-  handleChange = (event) => {
+  handleChange = event => {
     const newlang = event.target.value;
     const { i18n } = this.props;
     this.setState(() => ({
-      lang: newlang,
+      lang: newlang
     }));
     i18n.changeLanguage(newlang);
   };
 
   handleSubmit = async (zipCode, budget) => {
-    const inseeCode = codes.find((code) => code.fields.code_postal === zipCode).fields.insee_com;
+    const inseeCode = codes.find(code => code.fields.code_postal === zipCode)
+      .fields.insee_com;
     const data = { inseeCode, budget };
-    this.setState((prevState) => (
-      { ...prevState, adSearch: { }, adsLoading: true }
-    ));
+    this.setState(prevState => ({
+      ...prevState,
+      adSearch: {},
+      adsLoading: true
+    }));
     const resp = await fetch(`${config.apiUrl}${config.adsUrl}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(data)
     });
     const respAsJson = await resp.json();
-    this.setState((prevState) => ({
-      ...prevState, adSearch: respAsJson.data, adsLoading: false,
+    this.setState(prevState => ({
+      ...prevState,
+      adSearch: respAsJson.data,
+      adsLoading: false
     }));
-  }
+  };
 
-  goTop = () => jump(this.home.current)
+  goTop = () => jump(this.home.current);
 
   render() {
     const theme = createMuiTheme({
       palette: {
-        type: 'dark', // Switching the dark mode on is a single property value change.
-      },
+        type: 'dark' // Switching the dark mode on is a single property value change.
+      }
     });
     const { lang, adSearch, adsLoading } = this.state;
     const { classes } = this.props;
@@ -116,22 +125,34 @@ class App extends Component {
               {config.homeBgCredits}
             </Typography>
           </div>
-          {!!adSearch.cards && !!adSearch.cards.list && !!adSearch.cards.list.length ? (
+          {!!adSearch.cards &&
+          !!adSearch.cards.list &&
+          !!adSearch.cards.list.length ? (
             <>
-              <Ads ads={[adSearch.cards.list[0]]} />
-              <Fab color="primary" className={classes.upArrow} onClick={this.goTop}>
+              <Ads ads={adSearch.cards.list} />
+              <Fab
+                color="primary"
+                className={classes.upArrow}
+                onClick={this.goTop}
+              >
                 <ArrowUpwardIcon />
               </Fab>
             </>
-          ) : adsLoading && (
-            <>
-              <div ref={this.setProgress} className="app--progress-container">
-                <CircularProgress className="app--progress" />
-              </div>
-              <Fab color="primary" className={classes.upArrow} onClick={this.goTop}>
-                <ArrowUpwardIcon />
-              </Fab>
-            </>
+          ) : (
+            adsLoading && (
+              <>
+                <div ref={this.setProgress} className="app--progress-container">
+                  <CircularProgress className="app--progress" />
+                </div>
+                <Fab
+                  color="primary"
+                  className={classes.upArrow}
+                  onClick={this.goTop}
+                >
+                  <ArrowUpwardIcon />
+                </Fab>
+              </>
+            )
           )}
         </Grid>
       </ThemeProvider>
@@ -141,12 +162,12 @@ class App extends Component {
 
 App.propTypes = {
   i18n: PropTypes.object,
-  classes: PropTypes.object,
+  classes: PropTypes.object
 };
 
 App.defaultProps = {
   i18n: {},
-  classes: {},
+  classes: {}
 };
 
 export default withTranslation()(withStyles(styles)(App));
