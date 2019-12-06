@@ -43,7 +43,20 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lang: props.i18n.language,
+      lang: 'fr',
+      searchForm: {
+        value: {
+          zipCode: {
+            value: '',
+            valid: false
+          },
+          budget: {
+            value: '',
+            valid: false
+          }
+        },
+        valid: false
+      },
       adSearch: {},
       adsLoading: false
     };
@@ -63,6 +76,11 @@ class App extends Component {
     }, 100);
   }
 
+  componentDidMount() {
+    const { i18n } = this.props;
+    i18n.changeLanguage('fr');
+  }
+
   handleChange = event => {
     const newlang = event.target.value;
     const { i18n } = this.props;
@@ -70,6 +88,24 @@ class App extends Component {
       lang: newlang
     }));
     i18n.changeLanguage(newlang);
+  };
+
+  handleFormValue = (name, _value) => {
+    const {
+      searchForm: { value }
+    } = this.state;
+    if (value[name].value !== _value) {
+      this.setState(prevState => ({
+        ...prevState,
+        searchForm: {
+          ...prevState.searchForm,
+          value: {
+            ...prevState.searchForm.value,
+            [name]: { ...prevState.searchForm.value[name], value: _value }
+          }
+        }
+      }));
+    }
   };
 
   handleSubmit = async (zipCode, budget) => {
@@ -81,19 +117,28 @@ class App extends Component {
       adSearch: {},
       adsLoading: true
     }));
-    const resp = await fetch(`${config.apiUrl}${config.adsUrl}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
-    const respAsJson = await resp.json();
-    this.setState(prevState => ({
-      ...prevState,
-      adSearch: respAsJson.data,
-      adsLoading: false
-    }));
+    try {
+      const resp = await fetch(`${config.apiUrl}${config.adsUrl}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      const respAsJson = await resp.json();
+      this.setState(prevState => ({
+        ...prevState,
+        adSearch: respAsJson.data,
+        adsLoading: false
+      }));
+    } catch (error) {
+      this.setState(prevState => ({
+        ...prevState,
+        adSearch: {},
+        adsLoading: false
+      }));
+      console.error('⛔️🚫 Error requesting for ads: ', error);
+    }
   };
 
   goTop = () => jump(this.home.current);
@@ -104,8 +149,11 @@ class App extends Component {
         type: 'dark' // Switching the dark mode on is a single property value change.
       }
     });
-    const { lang, adSearch, adsLoading } = this.state;
+    const { lang, adSearch, adsLoading, searchForm } = this.state;
     const { classes } = this.props;
+
+    const zipCode = searchForm.value.zipCode.value;
+    const budget = searchForm.value.budget.value;
 
     return (
       <ThemeProvider theme={theme}>
@@ -119,6 +167,8 @@ class App extends Component {
                 handleSubmit={this.handleSubmit}
                 codes={codes}
                 bgCredits={config.searchBgCredits}
+                zipCode={zipCode}
+                budget={budget}
               />
             </div>
             <Typography variant="caption" className="app--image-credits">

@@ -20,8 +20,8 @@ const styles = {
   icon: {
     fill: 'red',
     width: '3em',
-    height: '3em',
-  },
+    height: '3em'
+  }
 };
 
 const propTypes = {
@@ -30,6 +30,9 @@ const propTypes = {
   codes: PropTypes.array,
   bgCredits: PropTypes.string,
   classes: PropTypes.object,
+  zipCode: PropTypes.string,
+  budget: PropTypes.string,
+  handleFormValue: PropTypes.func
 };
 
 const defaultProps = {
@@ -38,37 +41,27 @@ const defaultProps = {
   codes: [],
   bgCredits: '',
   classes: {},
+  zipCode: '',
+  budget: '',
+  handleFormValue: () => {}
 };
 
 class Search extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      zipCode: '',
-      budget: '',
-    };
-  }
-
-  // handles zipCode and budget
-  handleChange = (name) => (event) => {
-    const { value } = event.target;
-    this.setState((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
-
   submitForm = () => {
-    const { handleSubmit } = this.props;
-    const { zipCode, budget } = this.state;
+    const { handleSubmit, zipCode, budget } = this.props;
     handleSubmit(zipCode, budget);
-  }
+  };
 
   render() {
     const {
-      t, codes, bgCredits, classes,
+      t,
+      codes,
+      bgCredits,
+      classes,
+      zipCode,
+      budget,
+      handleFormValue
     } = this.props;
-    const { zipCode, budget } = this.state;
 
     return (
       <Card className="search--card-container">
@@ -89,11 +82,13 @@ class Search extends React.Component {
             zipCode={zipCode}
             budget={budget}
             codes={codes}
-            handleChange={this.handleChange}
+            handleFormValue={handleFormValue}
           />
         </CardContent>
         <CardActions classes={{ root: 'search--card-actions' }}>
-          <Button variant="outlined" size="large" onClick={this.submitForm}>{t('Search')}</Button>
+          <Button variant="outlined" size="large" onClick={this.submitForm}>
+            {t('Search')}
+          </Button>
         </CardActions>
       </Card>
     );
