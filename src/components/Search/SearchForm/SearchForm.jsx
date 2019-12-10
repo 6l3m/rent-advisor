@@ -39,7 +39,8 @@ const propTypes = {
   budget: PropTypes.string,
   t: PropTypes.func,
   handleFormValue: PropTypes.func,
-  codes: PropTypes.array
+  codes: PropTypes.array,
+  submitForm: PropTypes.func
 };
 
 const defaultProps = {
@@ -47,12 +48,13 @@ const defaultProps = {
   budget: '',
   t: () => {},
   handleFormValue: () => {},
-  codes: []
+  codes: [],
+  submitForm: () => {}
 };
 
 export default function SearchForm(props) {
   const classes = useStyles();
-  const { t, zipCode, budget, handleFormValue, codes } = props;
+  const { t, zipCode, budget, handleFormValue, codes, submitForm } = props;
 
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
@@ -67,7 +69,7 @@ export default function SearchForm(props) {
   };
 
   return (
-    <form className={classes.container}>
+    <form className={classes.container} onSubmit={submitForm}>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel ref={inputLabel} htmlFor="outlined-zipCode-simple">
           {t('ZipCode')}

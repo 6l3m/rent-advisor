@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { withTranslation } from 'react-i18next';
 
@@ -30,6 +30,7 @@ import './App.scss';
 import codes from './assets/code-postal-code-insee-2015';
 
 import config from './config';
+import useAdsApi from './hooks/useAdsApi';
 
 const styles = {
   upArrow: {
@@ -39,33 +40,30 @@ const styles = {
   }
 };
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      lang: 'fr',
-      searchForm: {
-        value: {
-          zipCode: {
-            value: '',
-            valid: false
-          },
-          budget: {
-            value: '',
-            valid: false
-          }
-        },
+const App = props => {
+  const { classes, i18n } = props;
+
+  const [lang, setLang] = useState('fr');
+  const [searchForm, setSearchForm] = useState({
+    value: {
+      zipCode: {
+        value: '',
         valid: false
       },
-      adSearch: {},
-      adsLoading: false
-    };
-    this.setProgress = element => {
-      if (element) {
-        jump(element);
+      budget: {
+        value: '',
+        valid: false
       }
-    };
-    this.home = React.createRef();
+    },
+    valid: false
+  });
+  const [{ adSearch, adsLoading }, doFetch] = useAdsApi({
+    inseeCode: '',
+    budget: ''
+  });
+  const home = useRef(null);
+
+  useEffect(() => {
     window.onscroll = debounce(() => {
       if (
         window.innerHeight + document.documentElement.scrollTop ===
@@ -74,141 +72,98 @@ class App extends Component {
         // Do awesome stuff like loading more content!
       }
     }, 100);
-  }
+  }, []);
 
-  componentDidMount() {
-    const { i18n } = this.props;
-    i18n.changeLanguage('fr');
-  }
+  const setProgress = element => {
+    if (element) {
+      jump(element);
+    }
+  };
 
-  handleChange = event => {
+  const handleChange = event => {
     const newlang = event.target.value;
-    const { i18n } = this.props;
-    this.setState(() => ({
-      lang: newlang
-    }));
+    setLang(newlang);
     i18n.changeLanguage(newlang);
   };
 
-  handleFormValue = (name, _value) => {
-    const {
-      searchForm: { value }
-    } = this.state;
+  const handleFormValue = (name, _value) => {
+    const { value } = searchForm;
     if (value[name].value !== _value) {
-      this.setState(prevState => ({
-        ...prevState,
-        searchForm: {
-          ...prevState.searchForm,
-          value: {
-            ...prevState.searchForm.value,
-            [name]: { ...prevState.searchForm.value[name], value: _value }
-          }
+      setSearchForm({
+        ...searchForm,
+        value: {
+          ...searchForm.value,
+          [name]: { ...searchForm.value[name], value: _value }
         }
-      }));
-    }
-  };
-
-  handleSubmit = async (zipCode, budget) => {
-    const inseeCode = codes.find(code => code.fields.code_postal === zipCode)
-      .fields.insee_com;
-    const data = { inseeCode, budget };
-    this.setState(prevState => ({
-      ...prevState,
-      adSearch: {},
-      adsLoading: true
-    }));
-    try {
-      const resp = await fetch(`${config.apiUrl}${config.adsUrl}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
       });
-      const respAsJson = await resp.json();
-      this.setState(prevState => ({
-        ...prevState,
-        adSearch: respAsJson.data,
-        adsLoading: false
-      }));
-    } catch (error) {
-      this.setState(prevState => ({
-        ...prevState,
-        adSearch: {},
-        adsLoading: false
-      }));
-      console.error('⛔️🚫 Error requesting for ads: ', error);
     }
   };
 
-  goTop = () => jump(this.home.current);
+  const handleSubmit = () => {
+    const inseeCode = codes.find(
+      code => code.fields.code_postal === searchForm.value.zipCode.value
+    ).fields.insee_com;
+    const data = { inseeCode, budget: searchForm.value.budget.value };
+    doFetch(data);
+  };
 
-  render() {
-    const theme = createMuiTheme({
-      palette: {
-        type: 'dark' // Switching the dark mode on is a single property value change.
-      }
-    });
-    const { lang, adSearch, adsLoading, searchForm } = this.state;
-    const { classes } = this.props;
+  const goTop = () => jump(home.current);
 
-    const zipCode = searchForm.value.zipCode.value;
-    const budget = searchForm.value.budget.value;
+  const theme = createMuiTheme({
+    palette: {
+      type: 'dark' // Switching the dark mode on is a single property value change.
+    }
+  });
 
-    return (
-      <ThemeProvider theme={theme}>
-        <Grid container component="main" className="app--container">
-          <CssBaseline />
-          <div ref={this.home} className="app--home-container">
-            <Header lang={lang} handleChange={this.handleChange} />
-            <div className="app--home-content">
-              <ParisLogo className="app--city-logo" />
-              <Search
-                handleSubmit={this.handleSubmit}
-                codes={codes}
-                bgCredits={config.searchBgCredits}
-                zipCode={zipCode}
-                budget={budget}
-              />
-            </div>
-            <Typography variant="caption" className="app--image-credits">
-              {config.homeBgCredits}
-            </Typography>
+  const zipCode = searchForm.value.zipCode.value;
+  const budget = searchForm.value.budget.value;
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Grid container component="main" className="app--container">
+        <CssBaseline />
+        <div ref={home} className="app--home-container">
+          <Header lang={lang} handleChange={handleChange} />
+          <div className="app--home-content">
+            <ParisLogo className="app--city-logo" />
+            <Search
+              handleSubmit={handleSubmit}
+              codes={codes}
+              bgCredits={config.searchBgCredits}
+              zipCode={zipCode}
+              budget={budget}
+              handleFormValue={handleFormValue}
+            />
           </div>
-          {!!adSearch.cards &&
-          !!adSearch.cards.list &&
-          !!adSearch.cards.list.length ? (
+          <Typography variant="caption" className="app--image-credits">
+            {config.homeBgCredits}
+          </Typography>
+        </div>
+        {!!adSearch.cards &&
+        !!adSearch.cards.list &&
+        !!adSearch.cards.list.length ? (
+          <>
+            <Ads ads={adSearch.cards.list} />
+            <Fab color="primary" className={classes.upArrow} onClick={goTop}>
+              <ArrowUpwardIcon />
+            </Fab>
+          </>
+        ) : (
+          adsLoading && (
             <>
-              <Ads ads={adSearch.cards.list} />
-              <Fab
-                color="primary"
-                className={classes.upArrow}
-                onClick={this.goTop}
-              >
+              <div ref={setProgress} className="app--progress-container">
+                <CircularProgress className="app--progress" />
+              </div>
+              <Fab color="primary" className={classes.upArrow} onClick={goTop}>
                 <ArrowUpwardIcon />
               </Fab>
             </>
-          ) : (
-            adsLoading && (
-              <>
-                <div ref={this.setProgress} className="app--progress-container">
-                  <CircularProgress className="app--progress" />
-                </div>
-                <Fab
-                  color="primary"
-                  className={classes.upArrow}
-                  onClick={this.goTop}
-                >
-                  <ArrowUpwardIcon />
-                </Fab>
-              </>
-            )
-          )}
-        </Grid>
-      </ThemeProvider>
-    );
-  }
-}
+          )
+        )}
+      </Grid>
+    </ThemeProvider>
+  );
+};
 
 App.propTypes = {
   i18n: PropTypes.object,

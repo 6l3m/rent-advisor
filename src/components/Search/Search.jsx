@@ -47,7 +47,8 @@ const defaultProps = {
 };
 
 class Search extends React.Component {
-  submitForm = () => {
+  submitForm = event => {
+    event.preventDefault();
     const { handleSubmit, zipCode, budget } = this.props;
     handleSubmit(zipCode, budget);
   };
@@ -83,10 +84,16 @@ class Search extends React.Component {
             budget={budget}
             codes={codes}
             handleFormValue={handleFormValue}
+            submitForm={this.submitForm}
           />
         </CardContent>
         <CardActions classes={{ root: 'search--card-actions' }}>
-          <Button variant="outlined" size="large" onClick={this.submitForm}>
+          <Button
+            type="submit"
+            variant="outlined"
+            size="large"
+            onClick={this.submitForm}
+          >
             {t('Search')}
           </Button>
         </CardActions>
