@@ -57,10 +57,17 @@ const App = props => {
     },
     valid: false
   });
-  const [{ adSearch, adsLoading }, doFetch] = useAdsApi({
-    inseeCode: '',
-    budget: ''
-  });
+  const [{ adSearch, adsLoading }, doFetch] = useAdsApi(
+    {
+      inseeCode: '',
+      budget: ''
+    },
+    {
+      cards: {
+        list: []
+      }
+    }
+  );
   const home = useRef(null);
 
   useEffect(() => {
@@ -80,7 +87,7 @@ const App = props => {
     }
   };
 
-  const handleChange = event => {
+  const handleLangChange = event => {
     const newlang = event.target.value;
     setLang(newlang);
     i18n.changeLanguage(newlang);
@@ -103,8 +110,8 @@ const App = props => {
     const inseeCode = codes.find(
       code => code.fields.code_postal === searchForm.value.zipCode.value
     ).fields.insee_com;
-    const data = { inseeCode, budget: searchForm.value.budget.value };
-    doFetch(data);
+    const body = { inseeCode, budget: searchForm.value.budget.value };
+    doFetch(body);
   };
 
   const goTop = () => jump(home.current);
@@ -123,7 +130,7 @@ const App = props => {
       <Grid container component="main" className="app--container">
         <CssBaseline />
         <div ref={home} className="app--home-container">
-          <Header lang={lang} handleChange={handleChange} />
+          <Header lang={lang} handleChange={handleLangChange} />
           <div className="app--home-content">
             <ParisLogo className="app--city-logo" />
             <Search
@@ -139,9 +146,7 @@ const App = props => {
             {config.homeBgCredits}
           </Typography>
         </div>
-        {!!adSearch.cards &&
-        !!adSearch.cards.list &&
-        !!adSearch.cards.list.length ? (
+        {adSearch.cards.list.length ? (
           <>
             <Ads ads={adSearch.cards.list} />
             <Fab color="primary" className={classes.upArrow} onClick={goTop}>

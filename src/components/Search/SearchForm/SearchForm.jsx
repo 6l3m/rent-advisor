@@ -64,7 +64,6 @@ export default function SearchForm(props) {
 
   const handleChange = name => event => {
     const { value } = event.target;
-    console.log(name);
     handleFormValue(name, value);
   };
 

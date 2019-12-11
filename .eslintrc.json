@@ -14,7 +14,10 @@
     "comma-dangle": 0,
     "indent": 0,
     "no-console": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "plugins": ["react-hooks"]
 }

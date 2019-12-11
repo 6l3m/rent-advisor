@@ -46,61 +46,59 @@ const defaultProps = {
   handleFormValue: () => {}
 };
 
-class Search extends React.Component {
-  submitForm = event => {
+const Search = props => {
+  const {
+    handleSubmit,
+    t,
+    codes,
+    bgCredits,
+    classes,
+    zipCode,
+    budget,
+    handleFormValue
+  } = props;
+
+  const submitForm = event => {
     event.preventDefault();
-    const { handleSubmit, zipCode, budget } = this.props;
-    handleSubmit(zipCode, budget);
+    handleSubmit();
   };
 
-  render() {
-    const {
-      t,
-      codes,
-      bgCredits,
-      classes,
-      zipCode,
-      budget,
-      handleFormValue
-    } = this.props;
-
-    return (
-      <Card className="search--card-container">
-        <div className="search--card-image">
-          <Typography variant="caption" className="search--card-credits">
-            {bgCredits}
-          </Typography>
+  return (
+    <Card className="search--card-container">
+      <div className="search--card-image">
+        <Typography variant="caption" className="search--card-credits">
+          {bgCredits}
+        </Typography>
+      </div>
+      <CardContent className="search--card-content">
+        <div className="search--card-icon">
+          <LocationSearchingIcon className={classes.icon} />
         </div>
-        <CardContent className="search--card-content">
-          <div className="search--card-icon">
-            <LocationSearchingIcon className={classes.icon} />
-          </div>
-          <Typography variant="h5" component="h2">
-            {t('SearchAds')}
-          </Typography>
-          <SearchForm
-            t={t}
-            zipCode={zipCode}
-            budget={budget}
-            codes={codes}
-            handleFormValue={handleFormValue}
-            submitForm={this.submitForm}
-          />
-        </CardContent>
-        <CardActions classes={{ root: 'search--card-actions' }}>
-          <Button
-            type="submit"
-            variant="outlined"
-            size="large"
-            onClick={this.submitForm}
-          >
-            {t('Search')}
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }
-}
+        <Typography variant="h5" component="h2">
+          {t('SearchAds')}
+        </Typography>
+        <SearchForm
+          t={t}
+          zipCode={zipCode}
+          budget={budget}
+          codes={codes}
+          handleFormValue={handleFormValue}
+          submitForm={submitForm}
+        />
+      </CardContent>
+      <CardActions classes={{ root: 'search--card-actions' }}>
+        <Button
+          type="submit"
+          variant="outlined"
+          size="large"
+          onClick={handleSubmit}
+        >
+          {t('Search')}
+        </Button>
+      </CardActions>
+    </Card>
+  );
+};
 
 Search.propTypes = propTypes;
 Search.defaultProps = defaultProps;
