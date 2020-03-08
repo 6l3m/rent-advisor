@@ -27,7 +27,7 @@ import { ReactComponent as ParisLogo } from './assets/images/Ville_de_Paris_logo
 
 import './App.scss';
 
-import codes from './assets/code-postal-code-insee-2015';
+import codes from './assets/code-postal-code-insee-2015.json';
 
 import config from './config';
 import useAdsApi from './hooks/useAdsApi';
