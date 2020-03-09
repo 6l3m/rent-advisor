@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { withTranslation } from 'react-i18next';
 
@@ -16,8 +16,6 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import PropTypes from 'prop-types';
 
 import jump from 'jump.js';
-
-import debounce from 'lodash.debounce';
 
 import Header from './components/Header/Header';
 import Search from './components/Search/Search';
@@ -70,17 +68,6 @@ const App = props => {
   );
   const home = useRef(null);
 
-  useEffect(() => {
-    window.onscroll = debounce(() => {
-      if (
-        window.innerHeight + document.documentElement.scrollTop ===
-        document.documentElement.offsetHeight
-      ) {
-        // Do awesome stuff like loading more content!
-      }
-    }, 100);
-  }, []);
-
   const setProgress = element => {
     if (element) {
       jump(element);
@@ -114,7 +101,12 @@ const App = props => {
     doFetch(body);
   };
 
-  const goTop = () => jump(home.current);
+  const goTop = () =>
+    window.scroll({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
 
   const theme = createMuiTheme({
     palette: {
