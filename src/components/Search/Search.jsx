@@ -30,8 +30,6 @@ const propTypes = {
   codes: PropTypes.array,
   bgCredits: PropTypes.string,
   classes: PropTypes.object,
-  zipCode: PropTypes.string,
-  budget: PropTypes.string,
   handleFormValue: PropTypes.func
 };
 
@@ -41,22 +39,11 @@ const defaultProps = {
   codes: [],
   bgCredits: '',
   classes: {},
-  zipCode: '',
-  budget: '',
   handleFormValue: () => {}
 };
 
 const Search = props => {
-  const {
-    handleSubmit,
-    t,
-    codes,
-    bgCredits,
-    classes,
-    zipCode,
-    budget,
-    handleFormValue
-  } = props;
+  const { handleSubmit, t, codes, bgCredits, classes, handleFormValue } = props;
 
   const submitForm = event => {
     event.preventDefault();
@@ -77,22 +64,10 @@ const Search = props => {
         <Typography variant="h5" component="h2">
           {t('SearchAds')}
         </Typography>
-        <SearchForm
-          t={t}
-          zipCode={zipCode}
-          budget={budget}
-          codes={codes}
-          handleFormValue={handleFormValue}
-          submitForm={submitForm}
-        />
+        <SearchForm t={t} codes={codes} handleFormValue={handleFormValue} submitForm={submitForm} />
       </CardContent>
       <CardActions classes={{ root: 'search--card-actions' }}>
-        <Button
-          type="submit"
-          variant="outlined"
-          size="large"
-          onClick={handleSubmit}
-        >
+        <Button type="submit" variant="outlined" size="large" onClick={handleSubmit}>
           {t('Search')}
         </Button>
       </CardActions>

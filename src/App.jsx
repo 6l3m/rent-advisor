@@ -1,15 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 
 import { withTranslation } from 'react-i18next';
 
 import { createMuiTheme } from '@material-ui/core/styles';
-import {
-  Grid,
-  CssBaseline,
-  Typography,
-  CircularProgress,
-  Fab
-} from '@material-ui/core';
+import { Grid, CssBaseline, Typography, CircularProgress, Fab } from '@material-ui/core';
 import { ThemeProvider, withStyles } from '@material-ui/styles';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 
@@ -28,7 +22,10 @@ import './App.scss';
 import codes from './assets/code-postal-code-insee-2015.json';
 
 import config from './config';
+
 import useAdsApi from './hooks/useAdsApi';
+
+import SearchFormContext from './contexts/SearchFormContext';
 
 const styles = {
   upArrow: {
@@ -38,7 +35,7 @@ const styles = {
   }
 };
 
-const App = props => {
+function App(props) {
   const { classes, i18n } = props;
 
   const [lang, setLang] = useState('fr');
@@ -66,7 +63,6 @@ const App = props => {
       }
     }
   );
-  const home = useRef(null);
 
   const setProgress = element => {
     if (element) {
@@ -94,9 +90,8 @@ const App = props => {
   };
 
   const handleSubmit = () => {
-    const inseeCode = codes.find(
-      code => code.fields.code_postal === searchForm.value.zipCode.value
-    ).fields.insee_com;
+    const inseeCode = codes.find(code => code.fields.code_postal === searchForm.value.zipCode.value)
+      .fields.insee_com;
     const body = { inseeCode, budget: searchForm.value.budget.value };
     doFetch(body);
   };
@@ -114,25 +109,19 @@ const App = props => {
     }
   });
 
-  const zipCode = searchForm.value.zipCode.value;
-  const budget = searchForm.value.budget.value;
-
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" className="app--container">
         <CssBaseline />
-        <div ref={home} className="app--home-container">
+        <div className="app--home-container">
           <Header lang={lang} handleChange={handleLangChange} />
           <div className="app--home-content">
             <ParisLogo className="app--city-logo" />
-            <Search
-              handleSubmit={handleSubmit}
-              codes={codes}
-              bgCredits={config.searchBgCredits}
-              zipCode={zipCode}
-              budget={budget}
-              handleFormValue={handleFormValue}
-            />
+            <SearchFormContext.Provider
+              value={{ searchForm, handleFormValue, handleSubmit, codes }}
+            >
+              <Search bgCredits={config.searchBgCredits} />
+            </SearchFormContext.Provider>
           </div>
           <Typography variant="caption" className="app--image-credits">
             {config.homeBgCredits}
@@ -160,7 +149,7 @@ const App = props => {
       </Grid>
     </ThemeProvider>
   );
-};
+}
 
 App.propTypes = {
   i18n: PropTypes.object,

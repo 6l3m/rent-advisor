@@ -1,15 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import PropTypes from 'prop-types';
 
 import { makeStyles } from '@material-ui/styles';
-import {
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem
-} from '@material-ui/core';
+import { TextField, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import SearchFormContext from '../../../contexts/SearchFormContext';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -35,32 +30,26 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const propTypes = {
-  zipCode: PropTypes.string,
-  budget: PropTypes.string,
-  t: PropTypes.func,
-  handleFormValue: PropTypes.func,
-  codes: PropTypes.array,
-  submitForm: PropTypes.func
+  t: PropTypes.func
 };
 
 const defaultProps = {
-  zipCode: '',
-  budget: '',
-  t: () => {},
-  handleFormValue: () => {},
-  codes: [],
-  submitForm: () => {}
+  t: () => {}
 };
 
 export default function SearchForm(props) {
   const classes = useStyles();
-  const { t, zipCode, budget, handleFormValue, codes, submitForm } = props;
+  const { t } = props;
 
   const inputLabel = React.useRef(null);
   const [labelWidth, setLabelWidth] = React.useState(0);
   React.useEffect(() => {
     setLabelWidth(inputLabel.current.offsetWidth);
   }, []);
+  const { searchForm, handleFormValue, handleSubmit, codes } = useContext(SearchFormContext);
+
+  const zipCode = searchForm.value.zipCode.value;
+  const budget = searchForm.value.budget.value;
 
   const handleChange = name => event => {
     const { value } = event.target;
@@ -68,7 +57,7 @@ export default function SearchForm(props) {
   };
 
   return (
-    <form className={classes.container} onSubmit={submitForm}>
+    <form className={classes.container} onSubmit={handleSubmit}>
       <FormControl variant="outlined" className={classes.formControl}>
         <InputLabel ref={inputLabel} htmlFor="outlined-zipCode-simple">
           {t('ZipCode')}
