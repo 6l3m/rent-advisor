@@ -9,7 +9,7 @@
     "i18next": "^19.3.2",
     "i18next-browser-languagedetector": "^4.0.2",
     "jump.js": "^1.0.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "nuka-carousel": "^4.6.5",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
